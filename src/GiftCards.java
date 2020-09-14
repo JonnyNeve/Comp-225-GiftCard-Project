@@ -1,6 +1,8 @@
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +17,7 @@ public class GiftCards extends Application implements EventHandler<ActionEvent> 
     Button button;
     ArrayList<String> cardList = new ArrayList<>();
     TextField cardNumber;
+    Scene sceneOne;
     public static void main(String[] args) {
         launch(args);
     }
@@ -35,13 +38,15 @@ public class GiftCards extends Application implements EventHandler<ActionEvent> 
             Label label = new Label(card);
             layout.getChildren().add(label);
         }
-
         layout.getChildren().add(cardNumber);
+        StackPane.setAlignment(cardNumber, Pos.CENTER);
         layout.getChildren().add(button);
-        layout.alignmentProperty();
+        StackPane.setAlignment(button, Pos.BOTTOM_CENTER);
 
-        Scene scene = new Scene(layout, 300, 500);
-        stage.setScene(scene);
+
+
+        sceneOne = new Scene(layout, 300, 500);
+        stage.setScene(sceneOne);
         stage.show();
 
     }
@@ -50,9 +55,7 @@ public class GiftCards extends Application implements EventHandler<ActionEvent> 
     public void handle(ActionEvent actionEvent) {
         if(actionEvent.getSource() == button){
             cardList.add(cardNumber.getText());
-            for (String s : cardList) {
-                System.out.println(s);
-            }
+
 
         }
     }
