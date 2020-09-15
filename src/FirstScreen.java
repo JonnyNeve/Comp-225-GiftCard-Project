@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class FirstScreen extends Application implements EventHandler<ActionEvent> {
@@ -19,9 +20,11 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
     Scene sceneOne;
 
     Button saveButton;
-    ArrayList<String> cardList = new ArrayList<>();
     TextField cardNumber;
+    Button backButton;
     Scene sceneTwo;
+
+    ArrayList<String> cardList = new ArrayList<>();
     public static void main(String[] args) {
         launch(args);
     }
@@ -38,17 +41,20 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
         stage.setScene(sceneOne);
         stage.show();
 
-        saveButton = new Button("Save");
-
+        saveButton = new Button("Add Card");
         cardNumber = new TextField("Enter a Gift Card Number");
+        backButton = new Button("Back");
         StackPane layout2 = new StackPane();
+
         saveButton.setOnAction(actionEvent -> {
             cardList.add(cardNumber.getText());
             Label label = new Label("Card Number: " + cardNumber.getText());
             layout2.getChildren().add(label);
-            StackPane.setAlignment(label, Pos.TOP_CENTER);
-            StackPane.setMargin(label, new Insets(10));
         });
+        backButton.setOnAction(actionEvent -> stage.setScene(sceneOne));
+
+        layout2.getChildren().add(backButton);
+        StackPane.setAlignment(backButton, Pos.TOP_LEFT);
         layout2.getChildren().add(cardNumber);
         StackPane.setAlignment(cardNumber, Pos.CENTER);
         layout2.getChildren().add(saveButton);
