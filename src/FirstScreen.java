@@ -17,7 +17,10 @@ import java.util.Stack;
 public class FirstScreen extends Application implements EventHandler<ActionEvent> {
 
     Button button;
+    Button viewCardsButton;
     Scene sceneOne;
+
+
     Button saveButton;
     TextField cardNumber;
     TextField cvv;
@@ -27,10 +30,14 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
     Button backButton;
     Scene sceneTwo;
 
-    int counter = 0;
+    Scene sceneThree;
+    Button sceneThreeBack;
 
-    ArrayList<GiftCard> cardList = new ArrayList<>();
+    int sceneTwoCounter = 0;
+    int sceneThreeCounterLeft = 25;
+    int sceneThreeCounterRight = 25;
     ArrayList<Label> cardLabelList = new ArrayList<>();
+    ArrayList<GiftCard> cardList = new ArrayList<>();
     public static void main(String[] args) {
         launch(args);
     }
@@ -38,11 +45,17 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Store Gift cards");
+
+        viewCardsButton = new Button("View Saved Cards");
+        StackPane layout3 = new StackPane();
+
         button = new Button("Add a new gift card");
         button.setOnAction(actionEvent -> {stage.setScene(sceneTwo);
         });
         StackPane layout = new StackPane();
         layout.getChildren().add(button);
+        layout.getChildren().add(viewCardsButton);
+        StackPane.setAlignment(viewCardsButton, Pos.TOP_CENTER);
         sceneOne = new Scene(layout, 300, 500);
         stage.setScene(sceneOne);
         stage.show();
@@ -70,23 +83,23 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
         StackPane.setMargin(expirationYear, new Insets(210, 0, 0, 0));
 
 
-
         saveButton.setOnAction(actionEvent -> {
-            GiftCard card = new GiftCard(cardName.getText(), cardNumber.getText(), cvv.getText(), expirationMonth.getText() + "/" + expirationYear);
+            GiftCard card = new GiftCard(cardName.getText(), cardNumber.getText(), cvv.getText(), expirationMonth.getText() + "/" + expirationYear.getText());
             cardList.add(card);
             Label label = new Label(cardName.getText() + " Card Saved!");
             cardLabelList.add(label);
             StackPane.setAlignment(label, Pos.TOP_CENTER);
-            StackPane.setMargin(label, new Insets(counter));
-            counter+=20;
+            StackPane.setMargin(label, new Insets(sceneTwoCounter));
+            sceneTwoCounter+=20;
             layout2.getChildren().add(label);
             System.out.println(card.toString());
+
         });
         backButton.setOnAction(actionEvent -> {
             for(Label label: cardLabelList){
                 layout2.getChildren().remove(label);
             }
-            counter = 0;
+            sceneTwoCounter = 0;
             stage.setScene(sceneOne);
             cardName.setText("What store is this card for?");
             cardNumber.setText("Enter a Gift Card #");
@@ -104,9 +117,45 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
         StackPane.setAlignment(saveButton, Pos.BOTTOM_CENTER);
         sceneTwo = new Scene(layout2, 300, 500);
 
-//        saveButton.setOnAction(actionEvent ->
+        viewCardsButton.setOnAction(actionEvent -> {
+            for(GiftCard card: cardList){
+                Label nameLabel = new Label(card.cardName);
+                Label numberLabel = new Label("Card number: " + card.cardNumber);
+                Label cvvLabel = new Label("CVV: " + card.cvv);
+                Label expirationLabel = new Label("Exp. Date: " + card.expiration);
+                layout3.getChildren().add(nameLabel);
+                layout3.getChildren().add(numberLabel);
+                layout3.getChildren().add(cvvLabel);
+                layout3.getChildren().add(expirationLabel);
+                StackPane.setAlignment(nameLabel, Pos.TOP_LEFT);
+                StackPane.setAlignment(numberLabel, Pos.TOP_RIGHT);
+                StackPane.setAlignment(cvvLabel, Pos.TOP_RIGHT);
+                StackPane.setAlignment(expirationLabel, Pos.TOP_LEFT);
+                StackPane.setMargin(nameLabel, new Insets(sceneThreeCounterLeft, 0, 0, 0));
+                sceneThreeCounterLeft += 25;
+                StackPane.setMargin(expirationLabel, new Insets(sceneThreeCounterLeft, 0, 0, 0));
+                sceneThreeCounterLeft+=25;
+                StackPane.setMargin(numberLabel, new Insets(sceneThreeCounterRight, 0, 0, 0));
+                sceneThreeCounterRight+=25;
+                StackPane.setMargin(cvvLabel, new Insets(sceneThreeCounterRight, 0, 0, 0));
+                sceneThreeCounterRight+=25;
+            }
+            stage.setScene(sceneThree);
+        });
+
+        sceneThreeBack = new Button("Back");
+        sceneThreeBack.setOnAction(actionEvent -> {
+            stage.setScene(sceneOne);
+            layout3.getChildren().clear();
+            sceneThreeCounterRight = 0;
+            sceneThreeCounterLeft = 0;
+            layout3.getChildren().add(sceneThreeBack);
+        });
+        layout3.getChildren().add(sceneThreeBack);
+        StackPane.setAlignment(sceneThreeBack, Pos.BOTTOM_CENTER);
 
 
+        sceneThree = new Scene(layout3, 300, 500);
     }
 
     @Override
