@@ -24,6 +24,8 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
     Button backButton;
     Scene sceneTwo;
 
+    int counter = 0;
+
     ArrayList<String> cardList = new ArrayList<>();
     public static void main(String[] args) {
         launch(args);
@@ -48,7 +50,10 @@ public class FirstScreen extends Application implements EventHandler<ActionEvent
 
         saveButton.setOnAction(actionEvent -> {
             cardList.add(cardNumber.getText());
-            Label label = new Label("Card Number: " + cardNumber.getText());
+            Label label = new Label("Card number: " + cardNumber.getText());
+            StackPane.setAlignment(label, Pos.TOP_CENTER);
+            StackPane.setMargin(label, new Insets(counter));
+            counter+=20;
             layout2.getChildren().add(label);
         });
         backButton.setOnAction(actionEvent -> stage.setScene(sceneOne));
